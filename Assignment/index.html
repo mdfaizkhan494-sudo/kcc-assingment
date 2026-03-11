@@ -1,1 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Registration Form</title>
 
+<style>
+
+body{
+font-family: Arial;
+background:#f4f4f4;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+background:white;
+padding:25px;
+width:320px;
+border-radius:8px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h2{
+text-align:center;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:6px 0;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+small{
+color:red;
+font-size:12px;
+}
+
+button{
+margin-top:10px;
+padding:10px;
+width:100%;
+background:#007BFF;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#0056b3;
+}
+
+.password-box{
+display:flex;
+}
+
+.password-box button{
+width:45px;
+margin-left:5px;
+}
+
+.strength{
+height:6px;
+background:#ddd;
+border-radius:5px;
+margin-top:5px;
+}
+
+#strengthBar{
+height:100%;
+width:0%;
+background:red;
+border-radius:5px;
+transition:0.3s;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Register</h2>
+
+<form id="registerForm">
+
+<label>Name</label>
+<input type="text" id="name">
+<small id="nameError"></small>
+
+<label>Email</label>
+<input type="text" id="email">
+<small id="emailError"></small>
+
+<label>Phone</label>
+<input type="text" id="phone">
+<small id="phoneError"></small>
+
+<label>Password</label>
+
+<div class="password-box">
+<input type="password" id="password">
+<button type="button" id="togglePass">👁</button>
+</div>
+
+<div class="strength">
+<div id="strengthBar"></div>
+</div>
+
+<small id="passwordError"></small>
+
+<button type="submit">Register</button>
+
+</form>
+
+</div>
+
+<script>
+
+const nameInput = document.getElementById("name");
+const emailInput = document.getElementById("email");
+const phoneInput = document.getElementById("phone");
+const passwordInput = document.getElementById("password");
+
+const nameError = document.getElementById("nameError");
+const emailError = document.getElementById("emailError");
+const phoneError = document.getElementById("phoneError");
+
+const strengthBar = document.getElementById("strengthBar");
+const togglePass = document.getElementById("togglePass");
+
+
+nameInput.addEventListener("input", () => {
+
+if(nameInput.value.length < 3){
+nameError.textContent = "Name must be at least 3 characters";
+}else{
+nameError.textContent = "";
+}
+
+});
+
+
+emailInput.addEventListener("input", () => {
+
+const emailPattern = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+
+if(!emailPattern.test(emailInput.value)){
+emailError.textContent = "Invalid email format";
+}else{
+emailError.textContent = "";
+}
+
+});
+
+
+phoneInput.addEventListener("input", () => {
+
+const phonePattern = /^[0-9]{10}$/;
+
+if(!phonePattern.test(phoneInput.value)){
+phoneError.textContent = "Enter valid 10 digit phone";
+}else{
+phoneError.textContent = "";
+}
+
+});
+
+
+passwordInput.addEventListener("input", () => {
+
+let strength = 0;
+const pass = passwordInput.value;
+
+if(pass.length > 6) strength++;
+if(/[A-Z]/.test(pass)) strength++;
+if(/[0-9]/.test(pass)) strength++;
+if(/[^A-Za-z0-9]/.test(pass)) strength++;
+
+if(strength === 1){
+strengthBar.style.width = "25%";
+strengthBar.style.background = "red";
+}
+
+else if(strength === 2){
+strengthBar.style.width = "50%";
+strengthBar.style.background = "orange";
+}
+
+else if(strength === 3){
+strengthBar.style.width = "75%";
+strengthBar.style.background = "yellowgreen";
+}
+
+else if(strength === 4){
+strengthBar.style.width = "100%";
+strengthBar.style.background = "green";
+}
+
+});
+
+
+togglePass.addEventListener("click", () => {
+
+if(passwordInput.type === "password"){
+passwordInput.type = "text";
+}else{
+passwordInput.type = "password";
+}
+
+});
+
+
+document.getElementById("registerForm").addEventListener("submit", function(e){
+
+if(nameInput.value.length < 3 ||
+!emailInput.value ||
+!phoneInput.value ||
+!passwordInput.value){
+
+alert("Please fill all fields correctly");
+e.preventDefault();
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
